@@ -1,7 +1,18 @@
+// import Swiper bundle with all modules installed
+import Swiper from "swiper/bundle";
+
+// import styles bundle
+/* import "swiper/css/bundle"; */
+
 console.log("loaded");
 
 const fetchImages = async () => {
-  return fetch("/images").then((data) => data.json());
+  return fetch("/images")
+    .then((data) => data.json())
+    .then((images) => {
+      /*       const swiper = new Swiper(...); */
+      return images;
+    });
 };
 
 const imageComponent = (url, title, uploadDate, phName) => `
