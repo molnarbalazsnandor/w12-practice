@@ -8,7 +8,7 @@ const app = express();
 app.use(fileUpload());
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(`${__dirname}/../frontend/index.html`));
+  res.sendFile(path.join(`${__dirname}/../frontend/public/index.html`));
 });
 
 app.use(
