@@ -4,6 +4,8 @@ import Swiper from "swiper/bundle";
 // import styles bundle
 import "swiper/css/bundle";
 
+let searchTerm = "";
+
 console.log("loaded");
 
 const fetchImages = async () => {
@@ -58,19 +60,40 @@ const initSwiper = () => {
   console.log(swiper);
 };
 
+function initFilter() {
+  const filterInput = document.querySelector("#filter");
+  filterInput.addEventListener("input", (e) => {
+    searchTerm = e.target.value;
+  });
+}
+
+const printImages = (data, imageContainer) => {
+  const html = data
+    /*     .filter((image) => image.title[0] === "M") */
+    .map((image) => {
+      imageComponent(image.url, image.title, image.uploadDate, image.phName);
+    });
+  imageContainer.insertAdjacentHTML("beforeend", html);
+};
+
 const init = async () => {
   initSwiper();
+  initFilter();
   const data = await fetchImages();
   console.log(data);
 
-  const rootElement = document.querySelector("#root");
-
-  data.map((image) => {
+  /*   data.forEach((image) => {
     rootElement.insertAdjacentHTML(
       "beforeend",
       imageComponent(image.url, image.title, image.uploadDate, image.phName)
     );
-  });
+  }); */
+
+  const rootElement = document.querySelector("#root");
+
+  const imageContainer = rootElement.querySelector(".images");
+
+  printImages(data, imageContainer);
 
   rootElement.insertAdjacentHTML("beforeend", formComponent());
   const formElement = document.querySelector("form");
