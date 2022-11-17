@@ -69,7 +69,7 @@ function initFilter() {
 
 const printImages = (data, imageContainer) => {
   const html = data
-    /*     .filter((image) => image.title[0] === "M") */
+    .filter((image) => image.title.toLowerCase().includes(searchTerm))
     .map((image) => {
       imageComponent(image.url, image.title, image.uploadDate, image.phName);
     });
