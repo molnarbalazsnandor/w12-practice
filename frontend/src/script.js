@@ -5,15 +5,19 @@ import Swiper from "swiper/bundle";
 import "swiper/css/bundle";
 
 let searchTerm = "";
+let images = [];
+
+const rootElement = document.querySelector("#root");
 
 console.log("loaded");
 
 const fetchImages = async () => {
   return fetch("/images")
     .then((data) => data.json())
-    .then((images) => {
-      /*       const swiper = new Swiper(...); */
-      return images;
+    .then((imageData) => {
+      images = imageData;
+
+      return imageData;
     });
 };
 
@@ -64,23 +68,34 @@ function initFilter() {
   const filterInput = document.querySelector("#filter");
   filterInput.addEventListener("input", (e) => {
     searchTerm = e.target.value;
+    printImages();
   });
 }
 
-const printImages = (data, imageContainer) => {
-  const html = data
+const printImages = () => {
+  const imageContainer = rootElement.querySelector(".images");
+  const html = images
     .filter((image) => image.title.toLowerCase().includes(searchTerm))
-    .map((image) => {
-      imageComponent(image.url, image.title, image.uploadDate, image.phName);
-    });
-  imageContainer.insertAdjacentHTML("beforeend", html);
+    //még ide egy sort() is jöhetne
+    .map(
+      (image) =>
+        imageComponent(
+          image.url,
+          image.title,
+          image.uploadDate,
+          image.phName
+        ) /* .join("") */
+    );
+  imageContainer.innerHTML = html;
 };
 
 const init = async () => {
   initSwiper();
   initFilter();
-  const data = await fetchImages();
-  console.log(data);
+  setTimeout(async () => {
+    await fetchImages();
+    printImages();
+  }, 5000);
 
   /*   data.forEach((image) => {
     rootElement.insertAdjacentHTML(
@@ -89,11 +104,7 @@ const init = async () => {
     );
   }); */
 
-  const rootElement = document.querySelector("#root");
-
-  const imageContainer = rootElement.querySelector(".images");
-
-  printImages(data, imageContainer);
+  printImages(images);
 
   rootElement.insertAdjacentHTML("beforeend", formComponent());
   const formElement = document.querySelector("form");
