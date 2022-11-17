@@ -76,16 +76,12 @@ const printImages = () => {
   const imageContainer = rootElement.querySelector(".images");
   const html = images
     .filter((image) => image.title.toLowerCase().includes(searchTerm))
+
     //még ide egy sort() is jöhetne
-    .map(
-      (image) =>
-        imageComponent(
-          image.url,
-          image.title,
-          image.uploadDate,
-          image.phName
-        ) /* .join("") */
-    );
+    .map((image) =>
+      imageComponent(image.url, image.title, image.uploadDate, image.phName)
+    )
+    .join("");
   imageContainer.innerHTML = html;
 };
 
